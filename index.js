@@ -1,31 +1,22 @@
 const express = require("express");
 const app = express();
-const mysql = require("mysql2");
+const fn = require("./fn/fn");
 
 require("dotenv").config();
-
-const PORT = process.env.PORT;
-
+app.use(express.urlencoded({ extended: false }));
 app.get("/recipes-app/api/recipes", async (req, res) => {
-  const data = await getData("SELECT * FROM recipes");
+  const data = await fn.getData("SELECT * FROM recipes");
+  res.json(data);
+});
+app.post("/recipes-app/api/recipes", async (req, res) => {
+  const { title, user, image, category } = req.body;
+  const query = `insert into recipes (title, created_at, created_user, image, category)
+    values('${title}', CURRENT_TIMESTAMP(), '${user}','${image}', '${category}')`;
+  const data = await fn.getData(query);
   res.json(data);
 });
 
-function getData(query) {
-  const connection = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "admin",
-    database: "recipesApp",
-  });
-  return new Promise(function (res, rej) {
-    connection.query(query, function (err, results, fields) {
-      if (err) rej(err);
-
-      res(results);
-    });
-  });
-}
+const PORT = process.env.PORT || 80;
 
 app.listen(PORT, (err) => {
   if (err) throw err;
