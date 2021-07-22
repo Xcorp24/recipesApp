@@ -106,3 +106,4 @@ dist
 #docker
 .dockerignore
 Dockerfile
+docker-compose*.yml
