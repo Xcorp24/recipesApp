@@ -10,7 +10,6 @@ function getData(query) {
   return new Promise(function (res, rej) {
     connection.query(query, function (err, results, fields) {
       if (err) rej(err);
-
       res(results);
     });
   });

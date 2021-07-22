@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
-
-require("dotenv").config();
+const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -9,9 +8,7 @@ app.use(express.urlencoded({ extended: false }));
 const recipesRoutes = require("./routes/recipes");
 app.use("/recipes-app/api", recipesRoutes);
 
-const PORT = process.env.PORT || 80;
-
-app.listen(PORT, (err) => {
+app.listen(port, (err) => {
   if (err) throw err;
-  console.log(`app is running on port: ${PORT}`);
+  console.log(`app is running on port: ${port}`);
 });
